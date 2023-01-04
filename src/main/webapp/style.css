@@ -1,0 +1,16 @@
+td{
+    background-color: grey;
+    border-collapse: collapse;
+    width: 2em;
+    height: 2em;
+}
+
+
+table{
+    background-color: darkgray;
+}
+
+cointainer-game{
+    margin: 6rem 6rem 6rem 6rem
+}
+
