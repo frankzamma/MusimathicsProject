@@ -1,16 +1,17 @@
 import {CellulaState} from "./CellulaState.js";
-import {creaGioco, nmod} from "./utils.js";
+import {creaGioco, nmod, sleep} from "./utils.js";
 import {Point} from "./Point.js";
 
+const row =  5;
+const col = 10;
+const p = 7;
+const t =  2;
 
-const row =  30;
-const col = 60;
-const p = 12;
-const t =  1;
-
-const color = ['grey', 'pink', 'red', 'yellow', 'blue', 'green',
-    'aquamarine', 'chocolate', 'cadetblue', 'azure', 'orange', 'magenta'];
-
+const color = ['gray', 'cyan', 'red', 'yellow', 'blue', 'lime',
+    'purple', 'black', 'white', 'lightblue', 'orange', 'magenta'];
+const note = ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4']
+const durate = ['2n', '4n', '8n', '16n']
+const timeOfDurate = ['1000', '500', '250', '125']
 let elem = document.querySelector('div#container-game');
 
 let array = new Array(row);
@@ -28,7 +29,9 @@ for(let i = 0; i < row; i++){
 let button = document.getElementById('generate-button');
 button.addEventListener('click', generaConfigurazioneCasuale);
 
-creaGioco(row, col, cambiaStato, avviaGioco, stoppaGioco)
+creaGioco(row, col, cambiaStato, starter, stoppaGioco)
+
+
 
 function cambiaStato(td){
     let id = td.id;
@@ -43,15 +46,33 @@ function cambiaStato(td){
 }
 
 let timeout;
+let playMusic = true;
+
+let checkbox = document.getElementById('music-play');
+
+checkbox.addEventListener('click',
+    function (){
+                playMusic = checkbox.checked;
+})
+
+
+function starter(){
+    let btn  = document.getElementById('avvia-button');
+    btn.setAttribute('disabled', 'true');
+    let checkbox =  document.getElementById('music-play');
+    checkbox.setAttribute('disabled', 'true')
+    stop  = false;
+    avviaGioco();
+}
 
 function avviaGioco(){
-    let celleDaEvolvere = new Array();
+    let celleDaEvolvere = [];
+    //console.log('Sto qui');
 
     for(let i = 0; i < row; i++){
         for(let j = 0; j < col; j++){
 
             let vicini = contaViciniVivi(i, j, (array[i][j].getState() + 1)%p);
-
             if(vicini >= t){
                 celleDaEvolvere.push(new Point(i,j));
             }
@@ -59,12 +80,23 @@ function avviaGioco(){
     }
 
     aggiornaArray(celleDaEvolvere);
-    timeout =  setTimeout(avviaGioco, 200);
+
+    if(playMusic)
+        suonaAll();
+    else
+        timeout =  setTimeout(avviaGioco, 200);
 
 }
 
 function stoppaGioco(){
-    clearTimeout(timeout)
+    let btn  = document.getElementById('avvia-button');
+    let checkbox =  document.getElementById('music-play');
+    stop = true;
+    btn.removeAttribute('disabled');
+    checkbox.removeAttribute('disabled');
+
+    clearTimeout(suonaTimeout);
+    clearTimeout(timeout);
 }
 
 function contaViciniVivi(i, j, state){
@@ -121,31 +153,74 @@ function aggiornaArray(celleDaAttivare){
     }
 }
 
-async function generaConfigurazioneCasuale(){
-    const synth = new Tone.Synth().toDestination();
-
+function generaConfigurazioneCasuale(){
     for(let i = 0; i < row; i++){
-        for(let j = 0; j < col; j++){
-            let state = Math.floor(Math.random()*13);
+        for(let j = 0; j < col; j++) {
+            let state = Math.floor(Math.random() * p + 1);
 
             array[i][j].setState(state);
 
             let td = document.getElementById(i + '-' + j);
 
             td.style.background = color[state];
-
-            const notes = ['A', 'B', 'C', 'D']
-
-            //synth.triggerAttackRelease( notes[Math.floor(Math.random() * notes.length)]+'4', '8n');
-            //await sleep(200);
         }
     }
 }
 
-function sleep(ms){
-    return new Promise(resolve => setTimeout(resolve, ms))
+let suonaTimeout;
+function suonaAll() {
+    const synth = new Tone.Synth().toDestination();
+    suona(0,0, synth);
 }
 
+let stop =  false;
+async function suona(i, j, synth) {
+    if(j != col){
+        if (array[i][j].getState() !== 0) {
+            console.log('Sto suonando...')
+            let notes = getNotes(array[i][j], i, j);
+            let num = Math.floor((Math.random()) * 3);
+            let td = document.getElementById(i + '-' + j);
+            let indexDurate = Math.floor(Math.random() * durate.length)
+            td.style.borderColor = 'Yellow';
+            synth.triggerAttackRelease(notes[num], durate[indexDurate])
+            await sleep(timeOfDurate[indexDurate]);
+            td.style.removeProperty('border')
+
+        }
+    }
+
+
+    if(j <= col - 1) {
+        if (i == row - 1) {
+            i = 0;
+            j += 1;
+        } else {
+            i += 1;
+        }
+
+        console.log(i + ', ' + j)
+        if (!stop) {
+            suonaTimeout = setTimeout(function () {
+                suona(i, j, synth);
+            }, 0);
+        }
+
+        }else{
+            avviaGioco();
+        }
+}
+
+
+
+function getNotes(cellula, i, j){
+    let notes = [note[cellula.getState() - 1]];
+
+    notes.push(Tone.Midi(note[0]).transpose(i).toNote());
+    notes.push(Tone.Midi(note[1]).transpose(j).toNote());
+    console.log(notes);
+    return notes;
+}
 
 
 
