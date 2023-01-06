@@ -3,6 +3,8 @@ td{
     border-collapse: collapse;
     width: 2em;
     height: 2em;
+    border-width: 1px;
+    border-style: solid;
 }
 
 
