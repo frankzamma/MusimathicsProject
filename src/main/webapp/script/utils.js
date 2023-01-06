@@ -35,4 +35,8 @@ function creaGioco(row, col, cambiaStato, avviaGioco, stoppaGioco) {
     stopButton.addEventListener('click', stoppaGioco);
 }
 
-export{nmod, creaGioco};
+function sleep(ms){
+    return new Promise(resolve => setTimeout(resolve, ms))
+}
+
+export{nmod, creaGioco, sleep};
