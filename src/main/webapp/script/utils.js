@@ -12,6 +12,7 @@ function nmod(n, m) {
 function creaGioco(row, col, cambiaStato, avviaGioco, stoppaGioco) {
     let elem = document.querySelector('div#container-game');
     let tab = document.createElement('table');
+    tab.setAttribute('id', 'compositor');
 
     for(let i = 0; i < row; i++){
         let tr = document.createElement('tr');
