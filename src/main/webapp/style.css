@@ -1,18 +1,66 @@
-td{
+body{
+    font-family: sans-serif;
+}
+
+table#compositor td{
     background-color: grey;
     border-collapse: collapse;
-    width: 2em;
-    height: 2em;
-    border-width: 1px;
-    border-style: solid;
+    width: 30px;
+    height: 30px;
+    border : 1px solid black;
 }
 
 
-table{
+table#compositor{
     background-color: darkgray;
 }
 
-cointainer-game{
-    margin: 6rem 6rem 6rem 6rem
+#container-game{
+    margin: 0rem;
+}
+
+.container{
+    margin: 2rem 1rem;
+}
+
+button {
+    background-color: blue;
+    color: white;
+    border: 1px solid blue;
+    padding: 10px;
+    border-radius: 25px;
+}
+button:hover{
+    background-color:whitesmoke;
+    color: blue;
+}
+
+button:disabled{
+    background-color: grey;
+    color: black;
+}
+
+div.input{
+    margin: 1em 0
+}
+
+
+
+@media screen and (min-width: 480px){
+    .container{
+        margin: 2rem 4rem;
+    }
+
+    #container-game{
+        margin: 2rem;
+    }
+    div.input{
+        margin: 0.5em 0
+    }
+
+    div.button-mod{
+        display: inline;
+    }
+
 }
 
