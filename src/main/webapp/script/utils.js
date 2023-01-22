@@ -9,7 +9,7 @@ function nmod(n, m) {
     }
 }
 
-function creaGioco(row, col, cambiaStato, avviaGioco, stoppaGioco) {
+function creaGioco(row, col, cambiaStato, avviaGioco, stoppaGioco, array, color) {
     let elem = document.querySelector('div#container-game');
     let tab = document.createElement('table');
     tab.setAttribute('id', 'compositor');
@@ -21,7 +21,10 @@ function creaGioco(row, col, cambiaStato, avviaGioco, stoppaGioco) {
             let tmp = document.createElement('td');
             tmp.id = i + '-' + j;
 
-            tmp.addEventListener('click',function (){cambiaStato(tmp)})
+            if(array != undefined)
+                tmp.addEventListener('click',function (){cambiaStato(array, color, tmp)})
+            else
+                tmp.addEventListener('click',function (){cambiaStato(tmp)})
             tr.appendChild(tmp)
         }
 
