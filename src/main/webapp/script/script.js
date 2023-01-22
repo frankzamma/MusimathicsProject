@@ -1,23 +1,28 @@
 import {CellulaState} from "./CellulaState.js";
 import {creaGioco, nmod, sleep} from "./utils.js";
 import {Point} from "./Point.js";
+import {getChords, getScale} from "./utilsChord.js";
+import {contaVicini, generaConfigurazioneCasuale} from "./utilsForCca.js";
+
 
 let row =  10;
 let col = 10;
 let p = 12;
 let t =  1;
-let pLabel = document.getElementById("p-label");
-pLabel.innerText = "p = " + p;
 
-let tLabel = document.getElementById("t-label");
-tLabel.innerText = "t = " + t;
 
-const color = ['gray', 'cyan', 'red', 'yellow', 'blue', 'lime',
-    'purple', 'black', 'white', 'lightblue', 'orange', 'magenta'];
-const note = ['Bb3', 'C4', 'D4', 'Eb4', 'F4', 'G4', 'A4']
-const durate = ['2n', '4n', '8n', '16n']
-const timeOfDurate = ['1000', '500', '250', '125']
-let elem = document.querySelector('div#container-game');
+const color = ['gray', '#E8AEB7', '#B8E1FF', '#A9FFF7', '#94FBAB', '#F4EBD9',
+    '#6BF178', '#F5B700', '#008BF8', '#4F759B', '#4ECDC4', '#F038FF'];
+const durate = ['2n', '4n', '8n']
+const timeOfDurate = [1000, 500, 250, 125]
+
+let note = ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4']
+
+let chords = [
+    ["C3", "E3", "G3"],
+    ["F3", "A3", "A3"],
+    ["G3","Bb3", "D3"]
+]
 
 let array = new Array(row);
 
@@ -30,53 +35,47 @@ for(let i = 0; i < row; i++){
         array[i][j] = new CellulaState(p);
     }
 }
+let pLabel = document.getElementById("p-label");
+pLabel.innerText = "p = " + p;
+
+let tLabel = document.getElementById("t-label");
+tLabel.innerText = "t = " + t;
 
 let button = document.getElementById('generate-button');
-button.addEventListener('click', generaConfigurazioneCasuale);
-
-creaGioco(row, col, cambiaStato, starter, stoppaGioco)
-
-
-function cambiaStato(td){
-    let id = td.id;
-    let tmp = id.split('-');
-
-    let statoAttuale = array[tmp[0]][tmp[1]].getState();
-    console.log(statoAttuale)
-    let nuovoStato =  (statoAttuale + 1) % p;
-    console.log(nuovoStato);
-    array[tmp[0]][tmp[1]].setState(nuovoStato);
-    td.style.background = color[nuovoStato];
-}
+button.addEventListener('click', function (){
+    generaConfigurazioneCasuale(array, row, col, p, color);});
 
 let timeout;
 let playMusic = true;
 
 let checkbox = document.getElementById('music-play');
 
-checkbox.addEventListener('click',
-    function (){
-                playMusic = checkbox.checked;
-})
+checkbox.addEventListener('click',function (){playMusic = checkbox.checked;});
 
+creaGioco(row, col, cambiaStato, starter, stoppaGioco)
 
 function starter(){
     let btn  = document.getElementById('avvia-button');
     btn.setAttribute('disabled', 'true');
-    let checkbox =  document.getElementById('music-play');
     checkbox.setAttribute('disabled', 'true')
     stop  = false;
+
+    let tonalita =  document.getElementById('tonalita');
+    note =  getScale(tonalita.value);
+    chords =  getChords(tonalita.value);
+    tonalita.setAttribute("disabled", "disabled")
+    let strumento =  document.getElementById('instruments');
+    strumento.setAttribute('disabled', 'disabled');
     avviaGioco();
 }
 
 function avviaGioco(){
     let celleDaEvolvere = [];
-    //console.log('Sto qui');
 
     for(let i = 0; i < row; i++){
         for(let j = 0; j < col; j++){
             console.log((array[i][j].getState() + 1)%p)
-            let vicini = contaViciniVivi(i, j, (array[i][j].getState() + 1)%p);
+            let vicini = contaVicini(array, i, j, (array[i][j].getState() + 1)%p, row, col);
             if(vicini >= t){
                 celleDaEvolvere.push(new Point(i,j));
             }
@@ -89,7 +88,6 @@ function avviaGioco(){
         suonaAll();
     else
         timeout =  setTimeout(avviaGioco, 200);
-
 }
 
 function stoppaGioco(){
@@ -99,48 +97,16 @@ function stoppaGioco(){
     btn.removeAttribute('disabled');
     checkbox.removeAttribute('disabled');
 
+    let tonalita =  document.getElementById('tonalita');
+    tonalita.removeAttribute("disabled");
+
+    let strumento =  document.getElementById('instruments');
+    strumento.removeAttribute('disabled');
+
     clearTimeout(suonaTimeout);
     clearTimeout(timeout);
 }
 
-function contaViciniVivi(i, j, state){
-    let count = 0;
-
-    if(array[nmod((i-1),row)][nmod((j-1),col)].getState() === state){
-        count++;
-    }
-
-    //console.log(nmod((i-1),row) + ' , ' + nmod((j-1),col))
-
-    if(array[i][nmod((j-1),col)].getState() === state){
-        count++;
-    }
-
-    if(array[nmod((i-1),row)][j].getState() === state){
-        count++;
-    }
-
-    if(array[(i+1)%row][(j+1)%col].getState() === state ){
-        count++;
-    }
-
-    if(array[(i+1)%row][j].getState() === state){
-        count++;
-    }
-
-    if(array[i][(j+1)%col].getState() === state){
-        count++;
-    }
-
-    if(array[nmod((i-1),row)][(j+1)%col].getState() === state){
-        count++;
-    }
-
-    if(array[(i+1)%row][nmod((j-1),col)].getState() === state){
-        count++;
-    }
-    return count;
-}
 
 function aggiornaArray(celleDaAttivare){
     for(let elem of celleDaAttivare){
@@ -156,22 +122,6 @@ function aggiornaArray(celleDaAttivare){
     }
 }
 
-function generaConfigurazioneCasuale(){
-    for(let i = 0; i < row; i++){
-        for(let j = 0; j < col; j++) {
-            let state = Math.floor(Math.random() * p);
-            console.log(i, j)
-            array[i][j].setState(state);
-
-            let td = document.getElementById(i + '-' + j);
-
-            td.style.background = color[state];
-
-            //td.innerText = state.toString();
-
-        }
-    }
-}
 
 let suonaTimeout;
 function suonaAll() {
@@ -205,7 +155,7 @@ function suonaAll() {
                     'C4': 'C4.mp3',
                     'C5': 'C5.mp3',
                     'C6': 'C6.mp3',
-                    'C7': 'F7.mp3',
+                    'C7': 'C7.mp3',
                     'E4': 'E4.mp3',
                     'E5': 'E5.mp3',
                     'E6': 'E6.mp3'
@@ -304,7 +254,6 @@ function suonaAll() {
                     'D3': 'D3.mp3',
                     'D4': 'D4.mp3',
                     'D#4': 'Ds4.mp3',
-                    'E4': 'E4.mp3',
                     'F2': 'F2.mp3',
                     'F3': 'F3.mp3',
                     'F4': 'F4.mp3',
@@ -325,7 +274,6 @@ function suonaAll() {
                     'C6': 'C6.mp3',
                     'D#4': 'Ds4.mp3',
                     'D5': 'D5.mp3',
-                    'E4': 'E4.mp3',
                     'F3': 'F3.mp3',
                     'F4': 'F4.mp3',
                     'F5': 'F5.mp3',
@@ -476,13 +424,6 @@ function suonaAll() {
                     'A3': 'A3.mp3',
                     'A4': 'A4.mp3',
                     'A5': 'A5.mp3',
-                    'A#1': 'As1.mp3',
-                    'A#2': 'As2.mp3',
-                    'A#3': 'As3.mp3',
-                    'A#4': 'As4.mp3',
-                    'A#5': 'As5.mp3',
-                    'A#6': 'As6.mp3',
-                    'A#7': 'As7.mp3',
                     'C1': 'C1.mp3',
                     'C2': 'C2.mp3',
                     'C3': 'C3.mp3',
@@ -493,39 +434,63 @@ function suonaAll() {
                     'D#2': 'Ds2.mp3',
                     'D#3': 'Ds3.mp3',
                     'D#4': 'Ds4.mp3',
-                    'F1' : 'F1.mp3',
-                    'F2': 'F2.mp3',
-                    'F3': 'F3.mp3',
-                    'F4': 'F4.mp3',
-                    'F5': 'F5.mp3',
+                    'F#1' : 'Fs1.mp3',
+                    'F#2': 'Fs2.mp3',
+                    'F#3': 'Fs3.mp3',
+                    'F#4': 'Fs4.mp3',
+                    'F#5': 'Fs5.mp3',
                 },
                 onload: () => suona(0, 0, organo),
                 baseUrl: "./instruments/organ/"
             }).toDestination();
             break;
-
-        }
-
-
-
-
-
+    }
 }
 
 let stop =  false;
+let lastChord = [];
 async function suona(i, j, synth) {
     if(j != col){
         if (array[i][j].getState() !== 0) {
-            console.log('Sto suonando...')
-            let notes = getNotes(array[i][j], i, j);
-            let num = Math.floor((Math.random()) * 3);
+            let compositor =  document.getElementById('compositor-select').value;
+            console.log("Compositor:" + compositor)
+            let notes;
+            switch (compositor){
+                case '0':
+                    notes =  getNote(array[i][j], i, j)
+                break;
+                case '1':
+                    notes = getNotesChord(array[i][j], i, j)
+                break;
+                case '2':
+                    notes = getNoteChordScale(array[i][j], i, j);
+                    if(i%2 === 0){
+                        if(lastChord.length > 0)
+                            synth.triggerRelease(lastChord, Tone.now());
+                        let chord = notes[1];
+                        synth.triggerAttack(chord, Tone.now(), 0.06);
+                        lastChord = chord;
+
+                        console.log("Cambio di Accordo: " + chord )
+                    }
+                break;
+            }
+
             let td = document.getElementById(i + '-' + j);
             let indexDurate = Math.floor(Math.random() * durate.length)
             td.style.borderColor = 'Yellow';
-            synth.triggerAttackRelease(notes[num], durate[indexDurate])
-            await sleep(timeOfDurate[indexDurate]- -10);
-            td.style.removeProperty('border')
 
+            if(notes.length > 0){
+                console.log('Sto suonando: ' + notes)
+
+                let note =  compositor == 0 ? notes[(i+j)%notes.length] : compositor == 1? notes : notes[0];
+                synth.triggerAttackRelease(note, durate[indexDurate])
+                await sleep(timeOfDurate[indexDurate]);
+            }else{
+                console.log("Pausa");
+            }
+
+            td.style.removeProperty('border')
         }
     }
 
@@ -542,23 +507,109 @@ async function suona(i, j, synth) {
         if (!stop) {
             suonaTimeout = setTimeout(function () {
                 suona(i, j, synth);
-            }, 0);
+            }, 20);
+        }else{
+            if(lastChord.length > 0)
+                synth.triggerRelease(lastChord, Tone.now())
         }
 
         }else{
+            if(lastChord.length > 0)
+                synth.triggerRelease(lastChord, Tone.now())
             avviaGioco();
         }
 }
 
-function getNotes(cellula, i, j){
+function getNotesChord(cellula, i, j){
     let notes = [note[cellula.getState()%note.length]];
 
-    notes.push(Tone.Midi(note[0]).transpose(i).toNote());
-    notes.push(Tone.Midi(note[1]).transpose(j).toNote());
-    console.log(notes);
-    return notes;
+    notes.push(Tone.Midi(notes[0]).transpose(i).toNote());
+    notes.push(Tone.Midi(notes[1]).transpose(j).toNote());
+
+    let valoreVicini = computeValoreVicini(i, j) % 8;
+
+    switch (valoreVicini){
+        case 0:
+            return [notes[0]];
+        case 1:
+            return [notes[1]];
+        case 2:
+            return [notes[2]];
+        case 3:
+            return [notes[0], notes[1]];
+        case 4:
+            return [notes[0], notes[2]];
+        case 5:
+            return [notes[1], notes[2]];
+        case 6:
+            return [notes[0], notes[1], notes[2]]
+        default:
+            return [];
+    }
 }
 
+function getNote(cellula, i, j){
+    let notes = [note[cellula.getState()%note.length]];
+
+    notes.push(Tone.Midi(notes[0]).transpose(i).toNote());
+    notes.push(Tone.Midi(notes[1]).transpose(j).toNote());
+
+
+    return notes;
+
+}
+
+function getNoteChordScale(cellula, i, j){
+    let valoreVicini = computeValoreVicini(i, j);
+    let chordIndex = (i % 2 === 0)? i % 3 :  (i - 1) % 3;
+    let coin =  Math.round(Math.random())
+    let n =  note[(coin == 0 ? (i+j) : valoreVicini) % note.length]; // scelgo casualmente se suonare la nota proveniente da i+j o dal valore dei vicini
+    switch (valoreVicini % 4){
+        case 0:
+            return [n, chords[chordIndex]];
+        case 1:
+            return [n, chords[chordIndex]];
+        case 2:
+            return [n, chords[chordIndex]];
+        case 3:
+            return [n,chords[chordIndex]]
+    }
+}
+
+function computeValoreVicini(i, j){
+    let count = 0;
+    count += array[nmod((i-1),row)][nmod((j-1),col)].getState();
+
+    count += array[i][nmod((j-1),col)].getState();
+
+    count += array[nmod((i-1),row)][j].getState();
+
+    count += array[(i+1)%row][(j+1)%col].getState();
+
+    count += array[(i+1)%row][j].getState();
+
+    count += array[i][(j+1)%col].getState();
+
+    count += array[nmod((i-1),row)][(j+1)%col].getState();
+    count += array[(i+1)%row][nmod((j-1),col)].getState();
+
+
+    return count;
+}
+
+function cambiaStato(td){
+    let id = td.id;
+    let tmp = id.split('-');
+
+    let statoAttuale = array[tmp[0]][tmp[1]].getState();
+    console.log(statoAttuale)
+    let nuovoStato =  (statoAttuale + 1) % p;
+    console.log(nuovoStato);
+    array[tmp[0]][tmp[1]].setState(nuovoStato);
+    td.style.background = color[nuovoStato];
+}
+
+// Modifica Dimensioni della tabella
 
 let addCol =  document.getElementById('col-add');
 addCol.addEventListener('click', function (){aumenta("col");});
@@ -568,6 +619,7 @@ addRow.addEventListener('click', function (){aumenta("row")});
 
 let addP =  document.getElementById('p-add');
 addP.addEventListener('click', function (){aumenta("p")});
+addP.setAttribute('disabled', 'true');
 
 let addT =  document.getElementById('t-add');
 addT.addEventListener('click', function (){aumenta("t")});
@@ -613,12 +665,18 @@ function aumenta(id){
         break;
         case 'p':
             p += 1;
-
+            if(p === 12){
+                addP.setAttribute('disabled', 'true');
+            }
+            delP.removeAttribute('disabled');
             pLabel.innerText = "p = " + p;
         break;
         case 't':
             t += 1;
-
+            if(t === (p-1)){
+                addT.setAttribute('disabled', 'true');
+            }
+            delT.removeAttribute('disabled');
             tLabel.innerText = "t = " + t;
         break;
     }
@@ -635,6 +693,7 @@ delP.addEventListener('click', function (){diminuisci("p")});
 
 let delT =  document.getElementById('t-delete');
 delT.addEventListener('click', function (){diminuisci("t")});
+delT.setAttribute('disabled', 'true');
 
 function diminuisci(id){
     switch (id) {
@@ -666,12 +725,18 @@ function diminuisci(id){
             break;
         case 'p':
             p -= 1;
-
+            if(p === 12){
+                delP.setAttribute('disabled', 'true');
+            }
+            addP.removeAttribute('disabled');
             pLabel.innerText = "p = " + p;
             break;
         case 't':
             t -= 1;
-
+            if(t==1){
+                delT.setAttribute('disabled', 'true');
+            }
+            addT.removeAttribute('disabled');
             tLabel.innerText = "t = " + t;
             break;
     }
