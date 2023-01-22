@@ -1,5 +1,5 @@
-body{
-    font-family: sans-serif;
+*{
+    font-family: 'Roboto', sans-serif;
 }
 
 table#compositor td{
@@ -23,44 +23,113 @@ table#compositor{
     margin: 2rem 1rem;
 }
 
-button {
+button.button-big {
     background-color: blue;
     color: white;
     border: 1px solid blue;
     padding: 10px;
     border-radius: 25px;
 }
-button:hover{
+button.button-big:hover, div.button-mod > button:hover{
     background-color:whitesmoke;
     color: blue;
 }
 
-button:disabled{
+button.button-big:disabled, div.button-mod > button:disabled{
     background-color: grey;
     color: black;
+}
+
+div.button-mod{
+    margin: 7px;
+}
+
+div.button-mod > button{
+    border: 1px solid blue;
+    background: blue;
+    color: white;
 }
 
 div.input{
     margin: 1em 0
 }
 
+ul#nav {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #333;
+}
 
+li.nav-item {
+    float: left;
+}
 
-@media screen and (min-width: 480px){
-    .container{
+li.nav-item a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+li.nav-item a:hover {
+    background-color: #111;
+}
+
+select{
+    padding: 10px;
+    width: 100%;
+}
+
+div.row{
+    width: 100%;
+}
+
+div.container-select{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1em;
+}
+
+div.container-select-item{
+    padding: 1em;
+}
+
+footer{
+    color: white;
+    background-color: black;
+    text-align: center;
+    padding: 1em;
+}
+
+footer > div{
+    margin-bottom: 1em ;
+}
+
+@media screen and (min-width: 600px) {
+    .container {
         margin: 2rem 4rem;
     }
 
-    #container-game{
+    #container-game {
         margin: 2rem;
     }
-    div.input{
+
+    div.input {
         margin: 0.5em 0
     }
 
-    div.button-mod{
+    div.button-mod {
         display: inline;
     }
+
+    div.container-select{
+        flex-direction: row;
+    }
+
+
 
 }
 
