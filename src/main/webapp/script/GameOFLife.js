@@ -2,10 +2,8 @@ import {Cellula} from "./Cellula.js";
 import {Point} from "./Point.js";
 import{nmod, creaGioco} from "./utils.js";
 
-const row =  30;
-const col = 60;
-
-
+const row =  13;
+const col = 30;
 
 let array = new Array(row);
 
