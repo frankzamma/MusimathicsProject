@@ -64,9 +64,11 @@ function starter(){
     chords =  getChords(tonalita.value);
 
     tonalita.setAttribute("disabled", "disabled");
-    let strumento =  document.getElementById('instruments');
-    strumento.setAttribute('disabled', 'disabled');
+    let instrument1 =  document.getElementById('instrument1');
+    let instrument2 =  document.getElementById('instrument2');
 
+    instrument1.setAttribute("disabled", "disabled");
+    instrument2.setAttribute("disabled", "disabled");
     avviaGioco();
 }
 
@@ -102,6 +104,12 @@ function stoppaGioco(){
     tonalita.removeAttribute("disabled");
     let strumento =  document.getElementById('instruments');
     strumento.removeAttribute('disabled');
+
+    let instrument1 =  document.getElementById('instrument1');
+    let instrument2 =  document.getElementById('instrument2');
+
+    instrument1.removeAttribute("disabled");
+    instrument2.removeAttribute("disabled");
 
     clearTimeout(suonaTimeout);
     clearTimeout(timeout);
