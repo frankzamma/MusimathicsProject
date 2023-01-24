@@ -1,8 +1,7 @@
 import {CellulaState} from "./CellulaState.js";
-import {creaGioco, nmod, sleep} from "./utils.js";
 import {Point} from "./Point.js";
 import {getChords, getScale} from "./utilsChord.js";
-import {contaVicini, generaConfigurazioneCasuale} from "./utilsForCca.js";
+import {contaVicini, generaConfigurazioneCasuale, creaGioco, nmod, sleep} from "./utilsForCca.js";
 
 let row =  11;
 let col = 30;
@@ -102,8 +101,6 @@ function stoppaGioco(){
 
     let tonalita =  document.getElementById('tonalita');
     tonalita.removeAttribute("disabled");
-    let strumento =  document.getElementById('instruments');
-    strumento.removeAttribute('disabled');
 
     let instrument1 =  document.getElementById('instrument1');
     let instrument2 =  document.getElementById('instrument2');

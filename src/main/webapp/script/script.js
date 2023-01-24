@@ -1,9 +1,7 @@
 import {CellulaState} from "./CellulaState.js";
-import {creaGioco, nmod, sleep} from "./utils.js";
 import {Point} from "./Point.js";
 import {getChords, getScale} from "./utilsChord.js";
-import {contaVicini, generaConfigurazioneCasuale} from "./utilsForCca.js";
-
+import {contaVicini, generaConfigurazioneCasuale, creaGioco, nmod, sleep} from "./utilsForCca.js";
 
 let row =  10;
 let col = 10;
@@ -659,7 +657,7 @@ function aumenta(id){
             array.push(newRow)
             row += 1;
 
-            if( row == 30)
+            if( row == 15)
                 addRow.setAttribute('disabled', 'true');
             delRow.removeAttribute('disabled');
         break;
