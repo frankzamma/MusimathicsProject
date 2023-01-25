@@ -1,7 +1,7 @@
 import {CellulaState} from "./CellulaState.js";
 import {Point} from "./Point.js";
 import {getChords, getScale} from "./utilsChord.js";
-import {contaVicini, generaConfigurazioneCasuale, creaGioco, nmod, sleep} from "./utilsForCca.js";
+import {contaVicini, generaConfigurazioneCasuale, creaGioco, nmod, sleep, resetTable} from "./utilsForCca.js";
 
 let row =  11;
 let col = 30;
@@ -17,7 +17,7 @@ let note = ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4']
 
 let chords = [
     ["C3", "E3", "G3"],
-    ["F3", "A3", "A3"],
+    ["F3", "A3", "C4"],
     ["G3","Bb3", "D3"]
 ]
 
@@ -32,6 +32,7 @@ for(let i = 0; i < row; i++){
         array[i][j] = new CellulaState(p);
     }
 }
+
 let pLabel = document.getElementById("p-label");
 pLabel.innerText = "p = " + p;
 
@@ -108,7 +109,7 @@ function stoppaGioco(){
     instrument1.removeAttribute("disabled");
     instrument2.removeAttribute("disabled");
 
-    clearTimeout(suonaTimeout);
+
     clearTimeout(timeout);
 }
 
@@ -139,8 +140,9 @@ async function suonaAll() {
     complete[1] = false;
 
     for(let i = 0; i < instruments.length; i++){
-        let rowEnd =  i == 0 ? Math.floor(row/2) : row;
         let init =  i==0 ? 0 :  Math.floor(row/2);
+        let rowEnd =  i == 0 ? Math.floor(row/2) : row;
+
         switch (instruments[i]){
             case "clarinet":
                 const clarinet = new Tone.Sampler({
@@ -175,7 +177,7 @@ async function suonaAll() {
                         'E5': 'E5.mp3',
                         'E6': 'E6.mp3'
                     },
-                    onload: () => suona(init, 0, flute, rowEnd,init),
+                    onload: () => suona(init, 0, flute, rowEnd, init),
                     baseUrl: "./instruments/flute/"
                 }).toDestination();
                 break;
@@ -463,7 +465,6 @@ async function suonaAll() {
     }
 }
 
-let suonaTimeout;
 let stop =  false;
 let complete = [false, false];
 async function suona(i, j, instrument, end, init) {
@@ -498,7 +499,7 @@ async function suona(i, j, instrument, end, init) {
 
         console.log(i + ', ' + j)
         if (!stop) {
-            suonaTimeout = setTimeout(function () { suona(i, j, instrument, end, init);}, 20);
+          setTimeout(function () { suona(i, j, instrument, end, init);}, 20);
         }
     }else{
         complete[init == 0? 0: 1] = true;
@@ -562,7 +563,7 @@ function cambiaStato(td){
     td.style.background = color[nuovoStato];
 }
 
-// Modifica Dimensioni della tabella
+// Modifica parametri p e t
 
 let addP =  document.getElementById('p-add');
 addP.addEventListener('click', function (){aumenta("p")});
@@ -580,7 +581,8 @@ function aumenta(id){
             }
             delP.removeAttribute('disabled');
             pLabel.innerText = "p = " + p;
-            break;
+            resetTable(array, row, col, color);
+        break;
         case 't':
             t += 1;
             if(t === (p-1)){
@@ -588,7 +590,7 @@ function aumenta(id){
             }
             delT.removeAttribute('disabled');
             tLabel.innerText = "t = " + t;
-            break;
+        break;
     }
 }
 
@@ -603,15 +605,16 @@ function diminuisci(id){
     switch (id) {
         case 'p':
             p -= 1;
-            if(p === 12){
+            if(p == 2){
                 delP.setAttribute('disabled', 'true');
             }
             addP.removeAttribute('disabled');
             pLabel.innerText = "p = " + p;
+            resetTable(array, row, col, color);
             break;
         case 't':
             t -= 1;
-            if(t==1){
+            if(t == 1){
                 delT.setAttribute('disabled', 'true');
             }
             addT.removeAttribute('disabled');

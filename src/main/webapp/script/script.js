@@ -1,7 +1,7 @@
 import {CellulaState} from "./CellulaState.js";
 import {Point} from "./Point.js";
 import {getChords, getScale} from "./utilsChord.js";
-import {contaVicini, generaConfigurazioneCasuale, creaGioco, nmod, sleep} from "./utilsForCca.js";
+import {contaVicini, generaConfigurazioneCasuale, creaGioco, nmod, sleep, resetTable} from "./utilsForCca.js";
 
 let row =  10;
 let col = 10;
@@ -69,6 +69,9 @@ function starter(){
     tonalita.setAttribute("disabled", "disabled")
     let strumento =  document.getElementById('instruments');
     strumento.setAttribute('disabled', 'disabled');
+
+    let compositor =  document.getElementById('compositor-select');
+    compositor.setAttribute('disabled', 'disabled');
     avviaGioco();
 }
 
@@ -108,7 +111,6 @@ function stoppaGioco(){
 
     let compositor =  document.getElementById('compositor-select');
     compositor.removeAttribute('disabled')
-    clearTimeout(suonaTimeout);
     clearTimeout(timeout);
 }
 
@@ -128,7 +130,7 @@ function aggiornaArray(celleDaAttivare){
 }
 
 
-let suonaTimeout;
+
 function suonaAll() {
     let instrument =  document.getElementById('instruments');
     switch (instrument.value){
@@ -482,14 +484,14 @@ async function suona(i, j, synth) {
             }
 
             let td = document.getElementById(i + '-' + j);
-            let indexDurate = Math.floor(Math.random() * durate.length)
             td.style.borderColor = 'Yellow';
 
             if(notes.length > 0){
-                console.log('Sto suonando: ' + notes)
-
+                let indexDurate = Math.floor(Math.random() * durate.length);
                 let note =  compositor == 0 ? notes[(i+j)%notes.length] : compositor == 1? notes : notes[0];
-                synth.triggerAttackRelease(note, durate[indexDurate])
+
+                console.log('Sto suonando: ' + note);
+                synth.triggerAttackRelease(note, durate[indexDurate]);
                 await sleep(timeOfDurate[indexDurate]);
             }else{
                 console.log("Pausa");
@@ -510,7 +512,7 @@ async function suona(i, j, synth) {
 
         console.log(i + ', ' + j)
         if (!stop) {
-            suonaTimeout = setTimeout(function () {
+           setTimeout(function () {
                 suona(i, j, synth);
             }, 20);
         }else{
@@ -518,11 +520,11 @@ async function suona(i, j, synth) {
                 synth.triggerRelease(lastChord, Tone.now())
         }
 
-        }else{
-            if(lastChord.length > 0)
-                synth.triggerRelease(lastChord, Tone.now())
-            avviaGioco();
-        }
+    }else{
+        if(lastChord.length > 0)
+              synth.triggerRelease(lastChord, Tone.now())
+        avviaGioco();
+    }
 }
 
 function getNotesChord(cellula, i, j){
@@ -675,6 +677,7 @@ function aumenta(id){
             }
             delP.removeAttribute('disabled');
             pLabel.innerText = "p = " + p;
+            resetTable(array, row, col, color);
         break;
         case 't':
             t += 1;
@@ -730,11 +733,12 @@ function diminuisci(id){
             break;
         case 'p':
             p -= 1;
-            if(p === 12){
+            if(p == 2){
                 delP.setAttribute('disabled', 'true');
             }
             addP.removeAttribute('disabled');
             pLabel.innerText = "p = " + p;
+            resetTable(array, row, col, color);
             break;
         case 't':
             t -= 1;

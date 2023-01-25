@@ -7,7 +7,7 @@ function getChords(note){
     chords.push(getMajorTriad(quarter));
     chords.push(getMajorTriad(quinta))
 
-    console.log("Accordi tonlita " + note);
+    console.log("Accordi tonalita " + note);
     console.log(chords);
 
     return chords;
@@ -31,9 +31,9 @@ function getScale(note){
 
     for(let i = 0; i < 7; i++){
         scale.push(Tone.Midi(scale[i]).transpose(intervals[i]).toNote());
-       console.log(intervals[i]);
+        console.log(intervals[i]);
     }
-    console.log("Scala tonlita " + note);
+    console.log("Scala tonalita " + note);
     console.log(scale);
     return scale;
 }
