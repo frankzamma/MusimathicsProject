@@ -15,7 +15,7 @@ table#compositor{
 }
 
 #container-game{
-    margin: 0rem;
+    margin: 0;
 }
 
 .container{
@@ -127,8 +127,5 @@ footer > div{
     div.container-select{
         flex-direction: row;
     }
-
-
-
 }
 
