@@ -12,7 +12,7 @@ let t =  1;
 const color = ['gray', '#E8AEB7', '#B8E1FF', '#A9FFF7', '#94FBAB', '#F4EBD9',
     '#6BF178', '#F5B700', '#008BF8', '#4F759B', '#4ECDC4', '#F038FF'];
 const durate = ['2n', '4n', '8n']
-const timeOfDurate = [1000, 500, 250, 125]
+const timeOfDurate = [1000, 500, 250]
 
 let note = ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4']
 
@@ -40,15 +40,19 @@ let tLabel = document.getElementById("t-label");
 tLabel.innerText = "t = " + t;
 
 let button = document.getElementById('generate-button');
-button.addEventListener('click', function (){
-    generaConfigurazioneCasuale(array, row, col, p, color);});
+button.addEventListener('click',
+    function () {
+        generaConfigurazioneCasuale(array, row, col, p, color);
+    });
 
 let timeout;
 let playMusic = true;
 
 let checkbox = document.getElementById('music-play');
 
-checkbox.addEventListener('click',function (){playMusic = checkbox.checked;});
+checkbox.addEventListener('click',function (){
+    playMusic = checkbox.checked;
+});
 
 creaGioco(row, col, cambiaStato, starter, stoppaGioco)
 
@@ -61,6 +65,7 @@ function starter(){
     let tonalita =  document.getElementById('tonalita');
     note =  getScale(tonalita.value);
     chords =  getChords(tonalita.value);
+
     tonalita.setAttribute("disabled", "disabled")
     let strumento =  document.getElementById('instruments');
     strumento.setAttribute('disabled', 'disabled');
@@ -72,7 +77,7 @@ function avviaGioco(){
 
     for(let i = 0; i < row; i++){
         for(let j = 0; j < col; j++){
-            console.log((array[i][j].getState() + 1)%p)
+            //console.log((array[i][j].getState() + 1)%p)
             let vicini = contaVicini(array, i, j, (array[i][j].getState() + 1)%p, row, col);
             if(vicini >= t){
                 celleDaEvolvere.push(new Point(i,j));
@@ -101,6 +106,8 @@ function stoppaGioco(){
     let strumento =  document.getElementById('instruments');
     strumento.removeAttribute('disabled');
 
+    let compositor =  document.getElementById('compositor-select');
+    compositor.removeAttribute('disabled')
     clearTimeout(suonaTimeout);
     clearTimeout(timeout);
 }
@@ -570,7 +577,7 @@ function getNoteChordScale(cellula, i, j){
         case 2:
             return [n, chords[chordIndex]];
         case 3:
-            return [n,chords[chordIndex]]
+            return [n, chords[chordIndex]]
     }
 }
 
