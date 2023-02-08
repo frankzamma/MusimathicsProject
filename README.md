@@ -14,3 +14,6 @@ If you want run project locally, follow this procedure:
 
 **Note**: if the port 8080 isn't available, you can choose onother port, such as 9000.
 
+# Credits
+
+For implementation of this project it's used [Tone.js](https://github.com/Tonejs/Tone.js).
