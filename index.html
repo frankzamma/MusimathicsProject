@@ -1,10 +1,19 @@
-<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
     <head>
         <title>Progetto Musimatica</title>
-        <%@include file="WEB-INF/links.jsp"%>
+        <link rel="stylesheet" type="text/css" href="style.css" >
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta charset="UTF-8">
     </head>
-        <%@include file="WEB-INF/navbar.jsp"%>
+    <nav>
+        <ul id="nav">
+            <li class="nav-item"><a href="index.html">Compositor</a></li>
+            <li class="nav-item"><a href="index.html">Duetto</a></li>
+        </ul>
+    </nav>
         <div class="container">
             <h1>
                 Compositore automatico basato su automi celluari
@@ -91,7 +100,14 @@
                 <button type="button" class="button-big"  id="generate-button">Genera casualmente</button>
             </div>
         </div>
-        <%@include file="WEB-INF/footer.jsp"%>
+        <footer>
+            <div class="row">
+                Progetto Musimathics 2022/2023 Prof. Roberto De Prisco
+            </div>
+            <div class="row">
+                Realizzato da Francesco Giuseppe Zammarrelli
+            </div>
+        </footer>
             <script src="script/script.js" type="module"></script>
             <script src="script/Tone.js" type="module"></script>
     </body>

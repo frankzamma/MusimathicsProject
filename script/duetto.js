@@ -314,7 +314,7 @@ async function suonaAll() {
                         'F3': 'F3.mp3',
                     },
                     onload: () => suona(init, 0, tuba, rowEnd, init),
-                    baseUrl: "./instruments/tuba/"
+                    baseUrl: "script/instruments/tuba/"
                 }).toDestination();
                 break;
             case 'violin':
@@ -336,7 +336,7 @@ async function suonaAll() {
                         'G6': 'G6.mp3',
                     },
                     onload: () => suona(init, 0, violino, rowEnd, init),
-                    baseUrl: "./instruments/violin/"
+                    baseUrl: "script/instruments/violin/"
                 }).toDestination();
                 break;
             case 'piano':
@@ -429,7 +429,7 @@ async function suonaAll() {
                         'G#7': 'Gs7.mp3',
                     },
                     onload: () => suona(init, 0, piano, rowEnd, init),
-                    baseUrl: "./instruments/piano/"
+                    baseUrl: "script/instruments/piano/"
                 }).toDestination();
                 break;
 
@@ -458,7 +458,7 @@ async function suonaAll() {
                         'F#5': 'Fs5.mp3',
                     },
                     onload: () => suona(init, 0, organo, rowEnd, init),
-                    baseUrl: "./instruments/organ/"
+                    baseUrl: "script/instruments/organ/"
                 }).toDestination();
                 break;
         }

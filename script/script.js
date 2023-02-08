@@ -150,7 +150,7 @@ function suonaAll() {
                     'F#6': 'Fs6.mp3'
                 },
                 onload: () => suona(0, 0, clarinet),
-                baseUrl: "./instruments/clarinet/"
+                baseUrl: "script/instruments/clarinet/"
             }).toDestination();
         break;
         case "flute":
@@ -168,7 +168,7 @@ function suonaAll() {
                     'E6': 'E6.mp3'
                 },
                 onload: () => suona(0, 0, flute),
-                baseUrl: "./instruments/flute/"
+                baseUrl: "script/instruments/flute/"
             }).toDestination();
             break;
         case "saxophone":
@@ -208,7 +208,7 @@ function suonaAll() {
                     'G#5': 'Gs5.mp3'
                 },
                 onload: () => suona(0, 0, sax),
-                baseUrl: "./instruments/saxophone/"
+                baseUrl: "script/instruments/saxophone/"
             }).toDestination();
             break;
         case "bassoon":
@@ -226,7 +226,7 @@ function suonaAll() {
                     'G4': 'G4.mp3'
                 },
                 onload: () => suona(0, 0, fagotto),
-                baseUrl: "./instruments/bassoon/"
+                baseUrl: "script/instruments/bassoon/"
             }).toDestination();
             break;
         case "french-horn":
@@ -244,7 +244,7 @@ function suonaAll() {
                     'G2': 'G2.mp3',
                 },
                 onload: () => suona(0, 0, corno),
-                baseUrl: "./instruments/french-horn/"
+                baseUrl: "script/instruments/french-horn/"
             }).toDestination();
             break;
             case "trombone":
@@ -268,7 +268,7 @@ function suonaAll() {
                     'G#3': 'Gs3.mp3',
                 },
                 onload: () => suona(0, 0, trombone),
-                baseUrl: "./instruments/trombone/"
+                baseUrl: "script/instruments/trombone/"
             }).toDestination();
             break;
         case "trumpet":
@@ -287,7 +287,7 @@ function suonaAll() {
                     'G4': 'G4.mp3',
                 },
                 onload: () => suona(0, 0, trumpet),
-                baseUrl: "./instruments/trumpet/"
+                baseUrl: "script/instruments/trumpet/"
             }).toDestination();
             break;
             case "tuba":
@@ -304,7 +304,7 @@ function suonaAll() {
                     'F3': 'F3.mp3',
                 },
                 onload: () => suona(0, 0, tuba),
-                baseUrl: "./instruments/tuba/"
+                baseUrl: "script/instruments/tuba/"
             }).toDestination();
             break;
         case "violin":
@@ -326,7 +326,7 @@ function suonaAll() {
                     'G6': 'G6.mp3',
                 },
                 onload: () => suona(0, 0, violino),
-                baseUrl: "./instruments/violin/"
+                baseUrl: "script/instruments/violin/"
             }).toDestination();
             break;
         case "piano":
@@ -419,7 +419,7 @@ function suonaAll() {
                     'G#7': 'Gs7.mp3',
                 },
                 onload: () => suona(0, 0, piano),
-                baseUrl: "./instruments/piano/"
+                baseUrl: "script/instruments/piano/"
             }).toDestination();
             break;
 
@@ -448,7 +448,7 @@ function suonaAll() {
                     'F#5': 'Fs5.mp3',
                 },
                 onload: () => suona(0, 0, organo),
-                baseUrl: "./instruments/organ/"
+                baseUrl: "script/instruments/organ/"
             }).toDestination();
             break;
     }
