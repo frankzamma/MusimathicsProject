@@ -2,7 +2,7 @@
 
 This repository contains the project of an **automatic music composer based on cyclic cellular automata** developed for the Musimathics course at the University of Salerno.
 ## How To Run the project
-The project is available  on this [link](https://frankzamma.github.io/musimathics/).
+The project is available  on this [link](https://frankzamma.github.io/MusimathicsProject/).
 
 If you want run project locally, follow this procedure:
 - Clone repository on your pc 
