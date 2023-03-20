@@ -25,7 +25,7 @@ jobs:
   deploy:
     environment:
       name: github-pages
-      url: https://frankzamma.github.io/Test/
+      url: https://frankzamma.github.io/MusimathicsProject/
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
