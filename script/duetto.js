@@ -160,7 +160,7 @@ async function suonaAll() {
                         'F#6': 'Fs6.mp3'
                     },
                     onload: () => suona(init, 0, clarinet, rowEnd, init),
-                    baseUrl: "./instruments/clarinet/"
+                    baseUrl: "script/instruments/clarinet/"
                 }).toDestination();
                 break;
             case  'flute':
@@ -178,7 +178,7 @@ async function suonaAll() {
                         'E6': 'E6.mp3'
                     },
                     onload: () => suona(init, 0, flute, rowEnd, init),
-                    baseUrl: "./instruments/flute/"
+                    baseUrl: "script/instruments/flute/"
                 }).toDestination();
                 break;
             case 'saxophone':
@@ -218,7 +218,7 @@ async function suonaAll() {
                         'G#5': 'Gs5.mp3'
                     },
                     onload: () => suona(init, 0, sax, rowEnd, init),
-                    baseUrl: "./instruments/saxophone/"
+                    baseUrl: "script/instruments/saxophone/"
                 }).toDestination();
                 break;
             case 'bassoon':
@@ -236,7 +236,7 @@ async function suonaAll() {
                         'G4': 'G4.mp3'
                     },
                     onload: () => suona(init, 0, fagotto, rowEnd, init),
-                    baseUrl: "./instruments/bassoon/"
+                    baseUrl: "script/scriptinstruments/bassoon/"
                 }).toDestination();
                 break;
             case 'french-horn':
@@ -254,7 +254,7 @@ async function suonaAll() {
                         'G2': 'G2.mp3',
                     },
                     onload: () => suona(init, 0, corno, rowEnd, init),
-                    baseUrl: "./instruments/french-horn/"
+                    baseUrl: "script/instruments/french-horn/"
                 }).toDestination();
                 break;
             case 'trombone':
@@ -278,7 +278,7 @@ async function suonaAll() {
                         'G#3': 'Gs3.mp3',
                     },
                     onload: () => suona(init, 0, trombone, rowEnd, init),
-                    baseUrl: "./instruments/trombone/"
+                    baseUrl: "script/instruments/trombone/"
                 }).toDestination();
                 break;
             case 'trumpet':
@@ -297,7 +297,7 @@ async function suonaAll() {
                         'G4': 'G4.mp3',
                     },
                     onload: () => suona(init, 0, trumpet, rowEnd, init),
-                    baseUrl: "./instruments/trumpet/"
+                    baseUrl: "script/instruments/trumpet/"
                 }).toDestination();
                 break;
             case 'tuba':
