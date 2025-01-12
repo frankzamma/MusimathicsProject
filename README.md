@@ -12,7 +12,7 @@ If you want run project locally, follow this procedure:
     ``` python3 -m http.server 8080 ```
 - Open browser and go to [http://localhost:8080/](http://localhost:8080).
 
-**Note**: if the port 8080 isn't available, you can choose onother port, such as 9000.
+**Note**: if the port 8080 isn't available, you can choose another port, such as 9000.
 
 # Credits
 
